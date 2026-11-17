@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased
+
+### Desk navigation on Frappe 16.50+
+
+- Sidebar rows no longer open in a new browser tab. Every row in both shipped
+  sidebars carried `open_in_new_tab: 1`; ERPNext's carry 0.
+- The VAT Analysis report is linked from the SA VAT sidebar and workspace. It backed a
+  workspace chart but had no way in.
+- `sync_shared_navigation` no longer writes `Workspace Sidebar` records. In v16.50+
+  that doctype is an inert archive that Frappe's sidebar migration reads, so each
+  runtime row became a `<title> (Custom)` module and a one-entry Dock layer that hid
+  the rail on upgraded sites. The Desktop Icon grid sync stays for sites that still
+  use it, and saves icons without link validation against the archive.
+- `patches.v1_6.repair_module_first_navigation` deletes the runtime rows and any
+  `(Custom)` module, workspace move or site Dock layer the migration made from them.
+- Tests no longer assert a `Workspace Sidebar`; they check the shipped Sidebar files.
+
 ## 2.0.0 - 2026-08-03
 
 ### Absorbed SA Localisation Finance

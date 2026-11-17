@@ -18,3 +18,4 @@ za_local_core.patches.v1_5.grant_reviewer_company_read
 za_local_core.patches.v1_5.strip_company_from_vat_tax_descriptions
 za_local_core.patches.v1_5.link_filings_to_calendar
 za_local_core.patches.v1_5.grant_checklist_access
+za_local_core.patches.v1_6.repair_module_first_navigation

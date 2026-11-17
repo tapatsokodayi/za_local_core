@@ -53,7 +53,7 @@
    "icon": "file-large",
    "is_query_report": 0,
    "label": "Returns & reports",
-   "link_count": 4,
+   "link_count": 5,
    "link_type": "DocType",
    "onboard": 0,
    "type": "Card Break"
@@ -100,9 +100,19 @@
   },
   {
    "hidden": 0,
+   "is_query_report": 1,
+   "label": "VAT Analysis",
+   "link_count": 0,
+   "link_to": "VAT Analysis",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
    "icon": "customization",
    "is_query_report": 0,
-   "label": "ERPNext — tax templates",
+   "label": "ERPNext \u2014 tax templates",
    "link_count": 3,
    "link_type": "DocType",
    "onboard": 0,
@@ -169,7 +179,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-10-06 22:10:00.000000",
+ "modified": "2026-11-17 21:30:00.000000",
  "modified_by": "Administrator",
  "module": "SA VAT",
  "name": "SA VAT",

@@ -32,7 +32,12 @@ class TestSharedNavigationContract(UnitTestCase):
 
 	def test_core_is_the_only_apps_screen_owner(self):
 		self.assertEqual("SA Localisation", hooks.app_title)
-		self.assertEqual(APP_TITLE, hooks.add_to_apps_screen[0]["title"])
+		self.assertEqual(APP_TITLE, hooks.app_title)
+		# The Apps-screen tile truncates past about 12 characters, so its label is a
+		# short form of the app title rather than the title itself.
+		tile_title = hooks.add_to_apps_screen[0]["title"]
+		self.assertLessEqual(len(tile_title), 12)
+		self.assertIn(tile_title, APP_TITLE)
 		self.assertEqual(APP_ROUTE, hooks.add_to_apps_screen[0]["route"])
 
 		# Each app's CI checks out only its own dependency chain, so assert the
@@ -48,8 +53,8 @@ class TestSharedNavigationContract(UnitTestCase):
 		"""A workspace attributed to a retired app disappears from the Desk.
 
 		``get_available_workspaces`` filters on ``spec.app in installed_apps`` and
-		``_cleanup_stale_navigation`` then deletes the sidebar and desktop entries of
-		anything it excluded. Naming an app that no longer exists therefore silently
+		``_cleanup_stale_navigation`` then deletes the desktop icon of anything it
+		excluded. Naming an app that no longer exists therefore silently
 		removes a workspace from navigation while leaving the Workspace record intact.
 		"""
 		bench_apps = Path(frappe.get_app_path(APP_NAME)).resolve().parents[1]
@@ -113,12 +118,15 @@ class TestSharedNavigationSync(IntegrationTestCase):
 			self.assertEqual(0, child.hidden)
 			self.assertEqual(spec.logo_url, child.logo_url)
 
-		for label in labels:
-			sidebar = frappe.get_doc("Workspace Sidebar", label)
-			self.assertEqual(APP_NAME, sidebar.app)
-			self.assertEqual(label, sidebar.items[0].link_to)
-			self.assertEqual("Workspace", sidebar.items[0].link_type)
-			self.assertGreater(len(sidebar.items), 1)
+		if frappe.db.table_exists("Workspace Sidebar"):
+			# The archive Frappe's sidebar migration reads. Writing to it recreates the
+			# "(Custom)" modules and the one-entry Dock layer the repair patch removes.
+			self.assertEqual(
+				[],
+				frappe.get_all(
+					"Workspace Sidebar", filters={"name": ["in", labels], "standard": 0}, pluck="name"
+				),
+			)
 
 		for stale_label in (
 			"SA Compliance",
@@ -131,13 +139,13 @@ class TestSharedNavigationSync(IntegrationTestCase):
 
 
 class TestWorkspaceOnboarding(IntegrationTestCase):
-	"""The sidebar is what surfaces a module's onboarding checklist in v16.
+	"""A module offers the onboarding whose ``module`` matches it.
 
-	Nothing set ``module_onboarding``, so every checklist these apps ship was
-	unreachable from the Desk while still appearing in the Module Onboarding list.
+	v16.50+ computes this per user in ``get_permitted_onboardings``; it replaced the
+	``Sidebar.module_onboarding`` pointer.
 	"""
 
-	def test_every_installed_workspace_links_its_onboarding(self):
+	def test_every_installed_workspace_offers_its_onboarding(self):
 		sync_shared_navigation()
 		for spec in get_available_workspaces():
 			self.assertTrue(spec.onboarding, f"{spec.label} declares no onboarding")
@@ -145,10 +153,11 @@ class TestWorkspaceOnboarding(IntegrationTestCase):
 				frappe.db.exists("Module Onboarding", spec.onboarding),
 				f"{spec.label} names a Module Onboarding that is not installed: {spec.onboarding}",
 			)
+			module = frappe.db.get_value("Workspace", spec.label, "module")
 			self.assertEqual(
-				spec.onboarding,
-				frappe.db.get_value("Workspace Sidebar", spec.label, "module_onboarding"),
-				f"{spec.label} sidebar does not link its onboarding",
+				module,
+				frappe.db.get_value("Module Onboarding", spec.onboarding, "module"),
+				f"{spec.onboarding} is not in the module of {spec.label}",
 			)
 
 	def test_onboarding_steps_use_the_canonical_desk_route(self):
@@ -170,3 +179,50 @@ class TestWorkspaceOnboarding(IntegrationTestCase):
 			if not (frappe.db.get_value("Onboarding Step", step, "description") or "").strip()
 		]
 		self.assertEqual([], undescribed)
+
+
+class TestShippedSidebars(UnitTestCase):
+	"""The Sidebar files are what the module-first desk renders."""
+
+	def _sidebars(self):
+		import json
+
+		root = Path(frappe.get_app_path(APP_NAME))
+		return [
+			json.loads(path.read_text(encoding="utf-8")) for path in sorted(root.glob("*/sidebar/*/*.json"))
+		]
+
+	def test_rows_open_in_the_current_tab(self):
+		for sidebar in self._sidebars():
+			for row in sidebar["items"]:
+				self.assertFalse(
+					row.get("open_in_new_tab"), f"{sidebar['title']}: '{row['label']}' opens in a new tab"
+				)
+
+	def test_every_sidebar_names_its_dock_entry_and_icon(self):
+		import json
+
+		dock = json.loads(
+			Path(frappe.get_app_path(APP_NAME, "dock", APP_NAME, f"{APP_NAME}.json")).read_text(
+				encoding="utf-8"
+			)
+		)
+		titles = {row["link_to"] for row in dock["items"] if row["link_type"] == "Sidebar"}
+		for sidebar in self._sidebars():
+			self.assertIn(sidebar["title"], titles)
+			self.assertTrue(sidebar["header_icon"].endswith("-duotone"))
+
+	def test_every_report_is_reachable_from_its_sidebar(self):
+		"""A report nobody links to is only reachable by typing its URL."""
+		import json
+
+		root = Path(frappe.get_app_path(APP_NAME))
+		for sidebar in self._sidebars():
+			linked = {row.get("link_to") for row in sidebar["items"]}
+			module_dir = frappe.scrub(sidebar["module"])
+			for path in (root / module_dir / "report").glob("*/*.json"):
+				report = json.loads(path.read_text(encoding="utf-8"))
+				if path.stem == path.parent.name:
+					self.assertIn(
+						report["report_name"], linked, f"{report['report_name']} is not in the sidebar"
+					)

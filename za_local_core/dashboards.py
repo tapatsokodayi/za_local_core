@@ -49,9 +49,9 @@ def attach_to_workspace(workspace: str, cards: list[str], charts: list[str]) -> 
 	"""Show the given metrics on a workspace, adding only what is missing.
 
 	The workspace file already declares these, but Frappe re-imports a standard
-	record only when the file is newer than the database, and shared-navigation
-	sync re-saves workspaces on every migrate. Converging here keeps an existing
-	site correct without depending on clock comparisons.
+	record only when the file is newer than the database, and a site's own edits
+	to a workspace can leave it older than a later release. Converging here keeps an
+	existing site correct without depending on clock comparisons.
 	"""
 	if not frappe.db.exists("Workspace", workspace):
 		return

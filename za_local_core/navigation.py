@@ -1,4 +1,9 @@
-"""Shared Frappe Desk navigation for the South African localisation suite."""
+"""Shared Frappe Desk navigation for the South African localisation suite.
+
+The module-first desk reads the shipped ``Dock`` and ``Sidebar`` records, so nothing is
+built here for it. What remains is the icon grid, which only a site that has switched
+Desktop Settings away from "Apps" still shows, and the cleanup of retired icons.
+"""
 
 from __future__ import annotations
 
@@ -57,13 +62,11 @@ WORKSPACE_SPECS = (
 
 def sync_shared_navigation() -> None:
 	"""Expose installed localisation domains through one shared Desk app."""
-	if not _navigation_schema_available():
+	if not frappe.db.table_exists("Desktop Icon"):
 		return
 
 	available = get_available_workspaces()
 	_cleanup_stale_navigation(available)
-	for spec in available:
-		_sync_workspace_sidebar(spec)
 	_sync_desktop_icons(available)
 	_repair_saved_desktop_layouts(available)
 	_clear_navigation_cache()
@@ -79,25 +82,15 @@ def get_available_workspaces() -> tuple[WorkspaceSpec, ...]:
 	)
 
 
-def _navigation_schema_available() -> bool:
-	return all(
-		frappe.db.table_exists(doctype)
-		for doctype in ("Desktop Icon", "Workspace Sidebar", "Workspace Sidebar Item")
-	)
-
-
 def _cleanup_stale_navigation(available: tuple[WorkspaceSpec, ...]) -> None:
 	available_labels = {spec.label for spec in available}
 	all_workspace_labels = {spec.label for spec in WORKSPACE_SPECS}
 
 	for label in all_workspace_labels - available_labels:
 		_delete_exact("Desktop Icon", label)
-		_delete_exact("Workspace Sidebar", label)
 
 	for label in STALE_APP_LABELS | {"SA Compliance"}:
 		_delete_exact("Desktop Icon", label)
-	if "SA Overview" in available_labels:
-		_delete_exact("Workspace Sidebar", "SA Compliance")
 
 	for icon in frappe.get_all(
 		"Desktop Icon",
@@ -107,115 +100,6 @@ def _cleanup_stale_navigation(available: tuple[WorkspaceSpec, ...]) -> None:
 		if icon.label == APP_TITLE and icon.app == APP_NAME:
 			continue
 		_delete_exact("Desktop Icon", icon.name)
-
-
-def _sync_workspace_sidebar(spec: WorkspaceSpec) -> None:
-	workspace = frappe.get_doc("Workspace", spec.label)
-	if frappe.db.exists("Workspace Sidebar", spec.label):
-		sidebar = frappe.get_doc("Workspace Sidebar", spec.label)
-	else:
-		sidebar = frappe.new_doc("Workspace Sidebar")
-		sidebar.title = spec.label
-
-	sidebar.app = APP_NAME
-	sidebar.module = workspace.module
-	sidebar.header_icon = workspace.icon or spec.icon
-	sidebar.standard = 0
-	# The sidebar is what surfaces a module's onboarding checklist in v16. Nothing
-	# ever set the link, so every checklist these apps ship was unreachable from the
-	# Desk. Clear it when the record is absent rather than point at a missing name.
-	if sidebar.meta.has_field("module_onboarding"):
-		sidebar.module_onboarding = (
-			spec.onboarding if frappe.db.exists("Module Onboarding", spec.onboarding) else None
-		)
-	sidebar.set("items", [])
-	for row in _build_sidebar_rows(workspace):
-		sidebar.append("items", row)
-
-	if sidebar.is_new():
-		sidebar.insert(ignore_permissions=True)
-	else:
-		sidebar.save(ignore_permissions=True)
-
-
-def _build_sidebar_rows(workspace) -> list[dict]:
-	rows = [
-		{
-			"label": "Home",
-			"type": "Link",
-			"link_type": "Workspace",
-			"link_to": workspace.name,
-			"icon": "home",
-		}
-	]
-	seen_links = {("Workspace", workspace.name)}
-
-	quick_access = []
-	for shortcut in workspace.get("shortcuts", []):
-		link_type = shortcut.type
-		link_to = shortcut.link_to
-		if not _valid_sidebar_link(link_type, link_to) or (link_type, link_to) in seen_links:
-			continue
-		quick_access.append(
-			{
-				"label": shortcut.label or link_to,
-				"type": "Link",
-				"link_type": link_type,
-				"link_to": link_to,
-				"child": 1,
-			}
-		)
-		seen_links.add((link_type, link_to))
-	if quick_access:
-		rows.append(_section_row("Quick access", "zap"))
-		rows.extend(quick_access)
-
-	pending_section = None
-	for link in workspace.get("links", []):
-		if link.type == "Card Break":
-			pending_section = link.label
-			continue
-		if link.type != "Link" or not _valid_sidebar_link(link.link_type, link.link_to):
-			continue
-		key = (link.link_type, link.link_to)
-		if key in seen_links:
-			continue
-		if pending_section:
-			rows.append(_section_row(pending_section, "list"))
-			pending_section = None
-		rows.append(
-			{
-				"label": link.label or link.link_to,
-				"type": "Link",
-				"link_type": link.link_type,
-				"link_to": link.link_to,
-				"child": 1,
-			}
-		)
-		seen_links.add(key)
-
-	return rows
-
-
-def _section_row(label: str, icon: str) -> dict:
-	return {
-		"label": label,
-		"type": "Section Break",
-		"icon": icon,
-		"indent": 1,
-		"collapsible": 1,
-		"keep_closed": 1,
-	}
-
-
-def _valid_sidebar_link(link_type: str | None, link_to: str | None) -> bool:
-	if not link_type or not link_to:
-		return False
-	if link_type == "URL":
-		return True
-	if link_type not in {"Dashboard", "DocType", "Page", "Report", "Workspace"}:
-		return False
-	return bool(frappe.db.exists(link_type, link_to))
 
 
 def _sync_desktop_icons(available: tuple[WorkspaceSpec, ...]) -> None:
@@ -271,9 +155,12 @@ def _get_or_create_app_icon():
 
 
 def _save_icon(icon) -> None:
+	# `link_to` is typed off `link_type`, and the "Workspace Sidebar" doctype it names is an
+	# inert archive in v16.50+, so validating the link would refuse every icon.
 	if icon.is_new():
-		icon.insert(ignore_permissions=True)
+		icon.insert(ignore_permissions=True, ignore_links=True)
 	else:
+		icon.flags.ignore_links = True
 		icon.save(ignore_permissions=True)
 
 

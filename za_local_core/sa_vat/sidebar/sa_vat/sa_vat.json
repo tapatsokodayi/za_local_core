@@ -18,7 +18,7 @@
    "label": "Home",
    "link_to": "SA VAT",
    "link_type": "Workspace",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -33,7 +33,7 @@
    "keep_closed": 1,
    "label": "Organisation",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Section Break"
   },
@@ -48,7 +48,7 @@
    "label": "Company",
    "link_to": "Company",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -63,7 +63,7 @@
    "keep_closed": 1,
    "label": "Returns & reports",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Section Break"
   },
@@ -78,7 +78,7 @@
    "label": "VAT201 Return",
    "link_to": "VAT201 Return",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -93,7 +93,7 @@
    "label": "VAT 201 Linked Transactions",
    "link_to": "VAT 201 Linked Transactions",
    "link_type": "Report",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -108,7 +108,7 @@
    "label": "VAT 201 Account Classifications",
    "link_to": "VAT 201 Account Classifications",
    "link_type": "Report",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -123,7 +123,22 @@
    "label": "VAT Audit Report",
    "link_to": "VAT Audit Report",
    "link_type": "Report",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "added": 0,
+   "child": 1,
+   "collapsible": 1,
+   "hidden": 0,
+   "indent": 0,
+   "is_default_module": 0,
+   "keep_closed": 0,
+   "label": "VAT Analysis",
+   "link_to": "VAT Analysis",
+   "link_type": "Report",
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -138,7 +153,7 @@
    "keep_closed": 1,
    "label": "ERPNext \u2014 tax templates",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Section Break"
   },
@@ -153,7 +168,7 @@
    "label": "Item Tax Template",
    "link_to": "Item Tax Template",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -168,7 +183,7 @@
    "label": "Sales Taxes and Charges Template",
    "link_to": "Sales Taxes and Charges Template",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -183,7 +198,7 @@
    "label": "Purchase Taxes and Charges Template",
    "link_to": "Purchase Taxes and Charges Template",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -198,7 +213,7 @@
    "keep_closed": 1,
    "label": "Configuration",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Section Break"
   },
@@ -213,7 +228,7 @@
    "label": "South Africa VAT Settings",
    "link_to": "South Africa VAT Settings",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -228,12 +243,12 @@
    "label": "VAT Vendor Type",
    "link_to": "VAT Vendor Type",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   }
  ],
- "modified": "2026-10-07 08:58:28.345218",
+ "modified": "2026-11-17 21:30:00.000000",
  "modified_by": "Administrator",
  "module": "SA VAT",
  "name": "SA VAT",

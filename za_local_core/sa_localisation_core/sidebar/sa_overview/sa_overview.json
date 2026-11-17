@@ -18,7 +18,7 @@
    "label": "Home",
    "link_to": "SA Overview",
    "link_type": "Workspace",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -33,7 +33,7 @@
    "keep_closed": 1,
    "label": "Configuration",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Section Break"
   },
@@ -48,7 +48,7 @@
    "label": "Company Compliance Profiles",
    "link_to": "ZA Company Compliance Profile",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -63,7 +63,7 @@
    "label": "Feature Readiness",
    "link_to": "ZA Feature Readiness",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -78,7 +78,7 @@
    "label": "Statutory Sources",
    "link_to": "ZA Statutory Source",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -93,7 +93,7 @@
    "label": "Statutory Rate Packs",
    "link_to": "ZA Statutory Rate Pack",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -108,7 +108,7 @@
    "keep_closed": 1,
    "label": "Filing controls",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Section Break"
   },
@@ -123,7 +123,7 @@
    "label": "Compliance Obligations",
    "link_to": "ZA Compliance Obligation",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -138,7 +138,7 @@
    "label": "Compliance Calendar",
    "link_to": "ZA Compliance Calendar Entry",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -153,7 +153,7 @@
    "label": "Filings",
    "link_to": "ZA Filing",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -168,7 +168,7 @@
    "label": "Submission Receipts",
    "link_to": "ZA Submission Receipt",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -183,7 +183,7 @@
    "keep_closed": 1,
    "label": "Change governance",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Section Break"
   },
@@ -198,7 +198,7 @@
    "label": "Statutory Change Reviews",
    "link_to": "ZA Statutory Change Review",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -213,7 +213,7 @@
    "keep_closed": 1,
    "label": "POPIA and PAIA",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Section Break"
   },
@@ -228,7 +228,7 @@
    "label": "Information Officer Registrations",
    "link_to": "ZA Information Officer Registration",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -243,7 +243,7 @@
    "label": "Processing Activities",
    "link_to": "ZA Processing Activity",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -258,7 +258,7 @@
    "label": "Retention Schedules",
    "link_to": "ZA Retention Schedule",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -273,7 +273,7 @@
    "label": "Operator Agreements",
    "link_to": "ZA Operator Agreement",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -288,7 +288,7 @@
    "label": "Cross-Border Transfers",
    "link_to": "ZA Cross Border Transfer",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -303,7 +303,7 @@
    "label": "Data Subject Requests",
    "link_to": "ZA Data Subject Request",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -318,7 +318,7 @@
    "label": "Personal Information Incidents",
    "link_to": "ZA Personal Information Incident",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -333,7 +333,7 @@
    "label": "PAIA Manuals",
    "link_to": "ZA PAIA Manual",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   },
@@ -348,7 +348,7 @@
    "keep_closed": 1,
    "label": "Documentation",
    "link_type": "DocType",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Section Break"
   },
@@ -363,12 +363,12 @@
    "label": "Publish Localisation Guides",
    "link_to": "sa-localisation-guides",
    "link_type": "Page",
-   "open_in_new_tab": 1,
+   "open_in_new_tab": 0,
    "show_arrow": 0,
    "type": "Link"
   }
  ],
- "modified": "2026-10-06 21:35:10.979527",
+ "modified": "2026-11-17 21:30:00.000000",
  "modified_by": "Administrator",
  "module": "SA Localisation Core",
  "name": "SA Overview",
